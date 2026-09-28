@@ -63,7 +63,7 @@ public class ChangeArrivalDeadlineDateTest {
 
         try {
             controller.changeArrivalDeadline();
-        } catch (RuntimeException outsideFaces) {
+        } catch (NullPointerException outsideFaces) {
             // Closing the dynamic dialog needs a Faces context, which is
             // unavailable in a container-free test. The facade delegation
             // asserted below has already happened at this point.
