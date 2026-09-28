@@ -132,7 +132,7 @@ public class ChangeArrivalDeadlineDateTest {
 
         @Override
         public String getArrivalDeadlineDate() {
-            return "not-a-date";
+            return "02/31/2014";
         }
     }
 

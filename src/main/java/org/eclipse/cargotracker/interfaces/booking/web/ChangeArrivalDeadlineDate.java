@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,11 +55,23 @@ public class ChangeArrivalDeadlineDate implements Serializable {
         cargo = bookingServiceFacade.loadCargoForRouting(trackingId);
 
         try {
-            arrivalDeadlineDate = new SimpleDateFormat(FORMAT)
-                    .parse(cargo.getArrivalDeadlineDate());
+            arrivalDeadlineDate = parseArrivalDeadline(cargo.getArrivalDeadlineDate());
         } catch (ParseException e) {
             throw new RuntimeException("Error parsing date", e);
         }
+    }
+
+    private Date parseArrivalDeadline(String value) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
+        formatter.setLenient(false);
+        ParsePosition position = new ParsePosition(0);
+        Date parsed = formatter.parse(value, position);
+        if (parsed == null || position.getIndex() != value.length()) {
+            int errorOffset = position.getErrorIndex() >= 0
+                    ? position.getErrorIndex() : position.getIndex();
+            throw new ParseException("Unparseable date: \"" + value + "\"", errorOffset);
+        }
+        return parsed;
     }
 
     public void changeArrivalDeadline() {
