@@ -257,6 +257,8 @@ public class BookingServiceTest {
         List<Leg> legs = new ArrayList<>(itinerary.getLegs());
         Date newDeadline = DateUtils.addMonths(deadline, 1);
 
+        assertEquals(SampleLocations.HELSINKI, destination);
+        assertEquals(assigned, itinerary);
         bookingService.changeDeadline(trackingId, newDeadline);
 
         cargo = entityManager
@@ -265,13 +267,10 @@ public class BookingServiceTest {
 
         assertEquals(SampleLocations.CHICAGO, cargo.getOrigin());
         assertEquals(destination, cargo.getRouteSpecification().getDestination());
-        assertEquals(SampleLocations.HELSINKI, cargo.getRouteSpecification()
-                .getDestination());
         assertTrue(DateUtils.isSameDay(newDeadline, cargo.getRouteSpecification()
                 .getArrivalDeadline()));
         assertEquals(itinerary, cargo.getItinerary());
         assertEquals(legs, cargo.getItinerary().getLegs());
-        assertEquals(assigned, cargo.getItinerary());
         assertEquals(TransportStatus.NOT_RECEIVED, cargo.getDelivery()
                 .getTransportStatus());
         assertEquals(Location.UNKNOWN, cargo.getDelivery()

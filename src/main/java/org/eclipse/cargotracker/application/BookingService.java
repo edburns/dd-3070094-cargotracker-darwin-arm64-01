@@ -29,5 +29,8 @@ public interface BookingService {
 
     void changeDestination(TrackingId trackingId, UnLocode unLocode);
 
+    /**
+     * Replaces the route specification deadline while preserving its locations.
+     */
     void changeDeadline(TrackingId trackingId, Date deadline);
 }
